@@ -6,297 +6,491 @@
 <title>KOKI Game</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
 body{
   margin:0;
   font-family:Arial,sans-serif;
-  background:linear-gradient(#123d2b,#06140e);
+  background:linear-gradient(#10452f,#03150e);
   color:white;
   min-height:100vh;
 }
+
 .app{
   max-width:430px;
   margin:auto;
-  padding:20px 16px 40px;
-  text-align:center;
-}
-h1{
-  color:#ffd83d;
-  margin:5px 0;
-  font-size:34px;
-}
-.subtitle{color:#a8c0b2;margin-bottom:20px}
-
-.stats{
-  display:flex;
-  gap:10px;
-}
-.box{
-  flex:1;
-  background:#10261c;
-  border:1px solid #315742;
-  border-radius:16px;
-  padding:14px;
-}
-.label{font-size:12px;color:#9db0a5}
-.value{
-  font-size:25px;
-  font-weight:bold;
-  color:#ffd83d;
-  margin-top:5px;
+  padding:18px 16px 45px;
 }
 
-.coin{
-  width:250px;
-  height:250px;
-  margin:35px auto 18px;
-  border-radius:50%;
-  background:radial-gradient(circle,#ffe875,#d79a00);
-  border:8px solid #f0bd24;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  cursor:pointer;
-  box-shadow:0 15px 30px #0008;
-}
-.coin:active{transform:scale(.94)}
-.<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KOKI Game</title>
-
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:linear-gradient(#123d2b,#06140e);
-  color:white;
-  min-height:100vh;
-}
-.app{
-  max-width:430px;
-  margin:auto;
-  padding:20px 16px 40px;
-  text-align:center;
-}
-h1{
-  color:#ffd83d;
-  margin:5px 0;
-  font-size:34px;
-}
-.subtitle{color:#a8c0b2;margin-bottom:20px}
-
-.stats{
-  display:flex;
-  gap:10px;
-}
-.box{
-  flex:1;
-  background:#10261c;
-  border:1px solid #315742;
-  border-radius:16px;
-  padding:14px;
-}
-.label{font-size:12px;color:#9db0a5}
-.value{
-  font-size:25px;
-  font-weight:bold;
-  color:#ffd83d;
-  margin-top:5px;
-}
-
-.coin{
-  width:250px;
-  height:250px;
-  margin:35px auto 18px;
-  border-radius:50%;
-  background:radial-gradient(circle,#ffe875,#d79a00);
-  border:8px solid #f0bd24;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  cursor:pointer;
-  box-shadow:0 15px 30px #0008;
-}
-.coin:active{transform:scale(.94)}
-.parrot{
-  width:200px;
-  height:200px;
-  object-fit:contain;
-  border-radius:50%;
-}
-.coin strong{
-  color:#171000;
-  font-size:28px;
-}
-
-.energyText{
+.top{
   display:flex;
   justify-content:space-between;
-  margin-top:20px;
+  align-items:center;
+  gap:10px;
 }
-.energyBar{
-  height:16px;
-  background:#07110c;
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.brand img{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.brand-name{
+  font-size:28px;
+  font-weight:900;
+  color:#ffd83d;
+}
+
+.wallet{
+  border:1px solid #e4b72a;
+  background:#17251d;
+  color:#ffd83d;
+  padding:10px 12px;
+  border-radius:12px;
+  font-weight:bold;
+  font-size:12px;
+}
+
+.subtitle{
+  color:#a9bcb1;
+  text-align:center;
+  margin:18px 0;
+}
+
+.stats{
+  display:flex;
+  gap:12px;
+}
+
+.box{
+  flex:1;
+  background:#0c291d;
+  border:1px solid #315743;
+  border-radius:20px;
+  padding:18px 10px;
+  text-align:center;
+}
+
+.label{
+  color:#a4b4ac;
+  font-size:13px;
+}
+
+.value{
+  margin-top:8px;
+  color:#ffd83d;
+  font-size:31px;
+  font-weight:900;
+}
+
+.coin{
+  width:270px;
+  height:270px;
+  margin:34px auto 16px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:.08s;
+}
+
+.coin:active{
+  transform:scale(.94);
+}
+
+.parrot{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  border-radius:50%;
+  display:block;
+  filter:drop-shadow(0 14px 18px rgba(0,0,0,.35));
+}
+
+.tap-text{
+  text-align:center;
+  font-size:20px;
+  margin-bottom:28px;
+}
+
+.energy-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:19px;
+}
+
+.energy-bar{
+  height:17px;
+  background:#07120d;
   border-radius:20px;
   overflow:hidden;
-  margin-top:7px;
+  margin-top:9px;
 }
-.energyFill{
-  height:100%;
-  background:#7dff72;
+
+.energy-fill{
   width:100%;
+  height:100%;
+  background:linear-gradient(90deg,#74ff68,#a5ff70);
+  transition:.2s;
+}
+
+.center{
+  text-align:center;
 }
 
 button{
-  border:0;
-  border-radius:13px;
-  padding:12px 18px;
-  font-weight:bold;
-  font-size:15px;
-  margin-top:15px;
-  background:#ffd83d;
-  color:#181300;
+  cursor:pointer;
 }
-.upgrade{
-  margin-top:15px;
-  background:#10261c;
-  border:1px solid #315742;
-  padding:14px;
+
+.daily{
+  margin-top:24px;
+  border:0;
   border-radius:16px;
+  background:#ffd83d;
+  color:#1c1600;
+  font-size:17px;
+  font-weight:900;
+  padding:14px 21px;
+}
+
+.daily:disabled{
+  opacity:.55;
+}
+
+.section{
+  margin-top:30px;
+  font-size:19px;
+  font-weight:bold;
+}
+
+.upgrade{
+  margin-top:12px;
+  background:#0d291e;
+  border:1px solid #315743;
+  border-radius:20px;
+  padding:16px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  text-align:left;
 }
-.upgrade button{margin:0}
+
+.upgrade-title{
+  font-size:18px;
+  font-weight:bold;
+}
+
+.upgrade small{
+  color:#c0ccc6;
+}
+
+.buy{
+  min-width:95px;
+  border:0;
+  border-radius:16px;
+  padding:13px;
+  background:#ffd83d;
+  color:#171100;
+  font-size:18px;
+  font-weight:900;
+}
+
+.buy:disabled{
+  opacity:.45;
+}
+
+.token{
+  margin-top:26px;
+  text-align:center;
+  color:#90a69a;
+  font-size:12px;
+  line-height:1.6;
+}
+
 .contract{
-  margin-top:25px;
-  font-size:11px;
-  color:#91aa9c;
   word-break:break-all;
+}
+
+.wallet-info{
+  margin-top:8px;
+  color:#b6c7bd;
+  font-size:12px;
+}
+
+.toast{
+  position:fixed;
+  left:50%;
+  top:20px;
+  transform:translateX(-50%);
+  background:#14251c;
+  border:1px solid #496d5a;
+  padding:11px 15px;
+  border-radius:12px;
+  opacity:0;
+  pointer-events:none;
+  transition:.2s;
+  z-index:100;
+  text-align:center;
+}
+
+.toast.show{
+  opacity:1;
 }
 </style>
 </head>
 
 <body>
+
 <div class="app">
 
-<h1>🦜 KOKI</h1>
-<div class="subtitle">Tap-to-Earn Game • BNB Chain</div>
+  <div class="top">
+    <div class="brand">
+      <img src="koki.png" alt="KOKI">
+      <div class="brand-name">KOKI</div>
+    </div>
 
-<div class="stats">
-  <div class="box">
-    <div class="label">POINTS</div>
-    <div class="value" id="points">0</div>
+    <button class="wallet" id="walletBtn">
+      Connect Wallet
+    </button>
   </div>
 
-  <div class="box">
-    <div class="label">TAP POWER</div>
-    <div class="value">+<span id="power">1</span></div>
+  <div class="subtitle">
+    Tap-to-Earn Game • BNB Chain
   </div>
-</div>
 
-<div class="coin" id="coin">
-  <img class="parrot" src="koki.png" alt="KOKI">
-  <strong>KOKI</strong>
-</div>
+  <div class="stats">
 
-<div>👆 Tap KOKI</div>
+    <div class="box">
+      <div class="label">POINTS</div>
+      <div class="value" id="points">0</div>
+    </div>
 
-<div class="energyText">
-  <span>⚡ Energy</span>
-  <span><span id="energy">1000</span>/1000</span>
-</div>
+    <div class="box">
+      <div class="label">TAP POWER</div>
+      <div class="value">+<span id="power">1</span></div>
+    </div>
 
-<div class="energyBar">
-  <div class="energyFill" id="energyFill"></div>
-</div>
-
-<button id="bonus">🎁 Daily Bonus +500</button>
-
-<div class="upgrade">
-  <div>
-    <b>🦜 Strong Beak</b><br>
-    <small>Tap power +1</small>
   </div>
-  <button id="upgrade">100</button>
+
+  <div class="coin" id="coin">
+    <img class="parrot" src="koki.png" alt="KOKI">
+  </div>
+
+  <div class="tap-text">
+    👆 Tap KOKI
+  </div>
+
+  <div class="energy-head">
+    <span>⚡ Energy</span>
+    <span>
+      <span id="energy">1000</span> /
+      <span id="maxEnergy">1000</span>
+    </span>
+  </div>
+
+  <div class="energy-bar">
+    <div class="energy-fill" id="energyFill"></div>
+  </div>
+
+  <div class="center">
+    <button class="daily" id="dailyBtn">
+      🎁 Daily Bonus +500
+    </button>
+  </div>
+
+  <div class="section">
+    Upgrades
+  </div>
+
+  <div class="upgrade">
+    <div>
+      <div class="upgrade-title">🦜 Strong Beak</div>
+      <small>Tap power +1</small>
+    </div>
+
+    <button class="buy" id="tapUpgrade">
+      100
+    </button>
+  </div>
+
+  <div class="upgrade">
+    <div>
+      <div class="upgrade-title">⚡ Energy Boost</div>
+      <small>Maximum energy +250</small>
+    </div>
+
+    <button class="buy" id="energyUpgrade">
+      250
+    </button>
+  </div>
+
+  <div class="token">
+    <b>KOKI Contract</b><br>
+    <div class="contract">
+      0x3b049d895d80552ea662a2df8cfbdba62ff04444
+    </div>
+
+    <div class="wallet-info" id="walletInfo">
+      Wallet not connected
+    </div>
+  </div>
+
 </div>
 
-<div class="contract">
-KOKI Contract:<br>
-0x3b049d895d80552ea662a2df8cfbdba62ff04444
-</div>
-
-</div>
+<div class="toast" id="toast"></div>
 
 <script>
-let points=Number(localStorage.points||0);
-let power=Number(localStorage.power||1);
-let energy=Number(localStorage.energy||1000);
-let cost=Number(localStorage.cost||100);
 
-const p=document.getElementById("points");
-const pw=document.getElementById("power");
-const en=document.getElementById("energy");
-const fill=document.getElementById("energyFill");
-const up=document.getElementById("upgrade");
+const CONTRACT =
+"0x3b049d895d80552ea662a2df8cfbdba62ff04444";
+
+let state = JSON.parse(
+  localStorage.getItem("koki_state")
+) || {
+  points:0,
+  power:1,
+  energy:1000,
+  maxEnergy:1000,
+  tapCost:100,
+  energyCost:250,
+  lastDaily:0
+};
+
+const pointsEl =
+document.getElementById("points");
+
+const powerEl =
+document.getElementById("power");
+
+const energyEl =
+document.getElementById("energy");
+
+const maxEnergyEl =
+document.getElementById("maxEnergy");
+
+const energyFill =
+document.getElementById("energyFill");
+
+const tapUpgrade =
+document.getElementById("tapUpgrade");
+
+const energyUpgrade =
+document.getElementById("energyUpgrade");
+
+const dailyBtn =
+document.getElementById("dailyBtn");
 
 function save(){
- localStorage.points=points;
- localStorage.power=power;
- localStorage.energy=energy;
- localStorage.cost=cost;
+  localStorage.setItem(
+    "koki_state",
+    JSON.stringify(state)
+  );
+}
+
+function toast(text){
+
+  const t =
+  document.getElementById("toast");
+
+  t.innerText=text;
+
+  t.classList.add("show");
+
+  setTimeout(()=>{
+    t.classList.remove("show");
+  },1800);
 }
 
 function draw(){
- p.innerText=points;
- pw.innerText=power;
- en.innerText=Math.floor(energy);
- fill.style.width=(energy/1000*100)+"%";
- up.innerText=cost;
+
+  pointsEl.innerText =
+  Math.floor(state.points);
+
+  powerEl.innerText =
+  state.power;
+
+  energyEl.innerText =
+  Math.floor(state.energy);
+
+  maxEnergyEl.innerText =
+  state.maxEnergy;
+
+  const percent =
+  state.energy /
+  state.maxEnergy *
+  100;
+
+  energyFill.style.width =
+  percent+"%";
+
+  tapUpgrade.innerText =
+  state.tapCost;
+
+  energyUpgrade.innerText =
+  state.energyCost;
+
+  tapUpgrade.disabled =
+  state.points < state.tapCost;
+
+  energyUpgrade.disabled =
+  state.points < state.energyCost;
+
+  const ready =
+  Date.now() - state.lastDaily >=
+  86400000;
+
+  dailyBtn.disabled = !ready;
+
+  dailyBtn.innerText =
+  ready
+  ? "🎁 Daily Bonus +500"
+  : "🎁 Bonus claimed";
 }
 
-document.getElementById("coin").onclick=()=>{
- if(energy<1)return;
- points+=power;
- energy--;
- if(navigator.vibrate)navigator.vibrate(15);
- save();
- draw();
+document.getElementById("coin")
+.onclick=()=>{
+
+  if(state.energy < 1){
+    toast("Not enough energy ⚡");
+    return;
+  }
+
+  state.points += state.power;
+
+  state.energy -= 1;
+
+  if(navigator.vibrate){
+    navigator.vibrate(15);
+  }
+
+  save();
+  draw();
 };
 
-up.onclick=()=>{
- if(points<cost)return;
- points-=cost;
- power++;
- cost=Math.ceil(cost*1.8);
- save();
- draw();
-};
+tapUpgrade.onclick=()=>{
 
-document.getElementById("bonus").onclick=()=>{
- points+=500;
- save();
- draw();
-};
+  if(state.points < state.tapCost)
+  return;
 
-setInterval(()=>{
- if(energy<1000){
-   energy=Math.min(1000,energy+2);
-   save();
-   draw();
- }
-},1000);
+  state.points -= state.tapCost;
 
-draw();
-</script>
+  state.power++;
 
-</body>
-</html>
-   
+  state.tapCost =
+  Math.ceil(state.tapCost * 1.8);
+
+  save();
+  draw();
+
+  toast
