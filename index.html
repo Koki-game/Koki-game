@@ -61,7 +61,244 @@ h1{
   box-shadow:0 15px 30px #0008;
 }
 .coin:active{transform:scale(.94)}
-.parrot{font-size:120px}
+.<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KOKI Game</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(#123d2b,#06140e);
+  color:white;
+  min-height:100vh;
+}
+.app{
+  max-width:430px;
+  margin:auto;
+  padding:20px 16px 40px;
+  text-align:center;
+}
+h1{
+  color:#ffd83d;
+  margin:5px 0;
+  font-size:34px;
+}
+.subtitle{color:#a8c0b2;margin-bottom:20px}
+
+.stats{
+  display:flex;
+  gap:10px;
+}
+.box{
+  flex:1;
+  background:#10261c;
+  border:1px solid #315742;
+  border-radius:16px;
+  padding:14px;
+}
+.label{font-size:12px;color:#9db0a5}
+.value{
+  font-size:25px;
+  font-weight:bold;
+  color:#ffd83d;
+  margin-top:5px;
+}
+
+.coin{
+  width:250px;
+  height:250px;
+  margin:35px auto 18px;
+  border-radius:50%;
+  background:radial-gradient(circle,#ffe875,#d79a00);
+  border:8px solid #f0bd24;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  cursor:pointer;
+  box-shadow:0 15px 30px #0008;
+}
+.coin:active{transform:scale(.94)}
+..parrot{
+  width:200px;
+  height:200px;
+  object-fit:contain;
+  border-radius:50%;
+}
+.coin strong{
+  color:#171000;
+  font-size:28px;
+}
+
+.energyText{
+  display:flex;
+  justify-content:space-between;
+  margin-top:20px;
+}
+.energyBar{
+  height:16px;
+  background:#07110c;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:7px;
+}
+.energyFill{
+  height:100%;
+  background:#7dff72;
+  width:100%;
+}
+
+button{
+  border:0;
+  border-radius:13px;
+  padding:12px 18px;
+  font-weight:bold;
+  font-size:15px;
+  margin-top:15px;
+  background:#ffd83d;
+  color:#181300;
+}
+.upgrade{
+  margin-top:15px;
+  background:#10261c;
+  border:1px solid #315742;
+  padding:14px;
+  border-radius:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  text-align:left;
+}
+.upgrade button{margin:0}
+.contract{
+  margin-top:25px;
+  font-size:11px;
+  color:#91aa9c;
+  word-break:break-all;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<h1>🦜 KOKI</h1>
+<div class="subtitle">Tap-to-Earn Game • BNB Chain</div>
+
+<div class="stats">
+  <div class="box">
+    <div class="label">POINTS</div>
+    <div class="value" id="points">0</div>
+  </div>
+
+  <div class="box">
+    <div class="label">TAP POWER</div>
+    <div class="value">+<span id="power">1</span></div>
+  </div>
+</div>
+
+<div class="coin" id="coin">
+  <img class="parrot" src="koki.png" alt="KOKI">
+  <strong>KOKI</strong>
+</div>
+
+<div>👆 Tap KOKI</div>
+
+<div class="energyText">
+  <span>⚡ Energy</span>
+  <span><span id="energy">1000</span>/1000</span>
+</div>
+
+<div class="energyBar">
+  <div class="energyFill" id="energyFill"></div>
+</div>
+
+<button id="bonus">🎁 Daily Bonus +500</button>
+
+<div class="upgrade">
+  <div>
+    <b>🦜 Strong Beak</b><br>
+    <small>Tap power +1</small>
+  </div>
+  <button id="upgrade">100</button>
+</div>
+
+<div class="contract">
+KOKI Contract:<br>
+0x3b049d895d80552ea662a2df8cfbdba62ff04444
+</div>
+
+</div>
+
+<script>
+let points=Number(localStorage.points||0);
+let power=Number(localStorage.power||1);
+let energy=Number(localStorage.energy||1000);
+let cost=Number(localStorage.cost||100);
+
+const p=document.getElementById("points");
+const pw=document.getElementById("power");
+const en=document.getElementById("energy");
+const fill=document.getElementById("energyFill");
+const up=document.getElementById("upgrade");
+
+function save(){
+ localStorage.points=points;
+ localStorage.power=power;
+ localStorage.energy=energy;
+ localStorage.cost=cost;
+}
+
+function draw(){
+ p.innerText=points;
+ pw.innerText=power;
+ en.innerText=Math.floor(energy);
+ fill.style.width=(energy/1000*100)+"%";
+ up.innerText=cost;
+}
+
+document.getElementById("coin").onclick=()=>{
+ if(energy<1)return;
+ points+=power;
+ energy--;
+ if(navigator.vibrate)navigator.vibrate(15);
+ save();
+ draw();
+};
+
+up.onclick=()=>{
+ if(points<cost)return;
+ points-=cost;
+ power++;
+ cost=Math.ceil(cost*1.8);
+ save();
+ draw();
+};
+
+document.getElementById("bonus").onclick=()=>{
+ points+=500;
+ save();
+ draw();
+};
+
+setInterval(()=>{
+ if(energy<1000){
+   energy=Math.min(1000,energy+2);
+   save();
+   draw();
+ }
+},1000);
+
+draw();
+</script>
+
+</body>
+</html>
 .coin strong{
   color:#171000;
   font-size:28px;
