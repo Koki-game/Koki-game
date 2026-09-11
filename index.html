@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KOKI Game</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, #173a2a 0%, #0d2018 35%, #07110d 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      padding: 16px 16px 95px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      background: linear-gradient(145deg, #ffd84a, #a56b00);
+      border: 2px solid #ffe783;
+      box-shadow: 0 0 18px rgba(255, 205, 45, .28);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #ffd84a;
+      letter-spacing: 1px;
+    }
+
+    .brand small {
+      color: #9bb9a8;
+    }
+
+    .wallet-btn,
+    .daily-btn {
+      border: 1px solid #7b6320;
+      background: linear-gradient(180deg, #282713, #17170d);
+      color: #ffd84a;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .wallet-btn:active,
+    .daily-btn:active {
+      transform: scale(.97);
+    }
+
+    .card {
+      margin-top: 16px;
+      background: rgba(20, 40, 31, .88);
+      border: 1px solid #2f5a45;
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, .22);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat {
+      background: #0f251b;
+      border: 1px solid #244b38;
+      border-radius: 16px;
+      padding: 13px;
+      text-align: center;
+    }
+
+    .stat .label {
+      color: #94ad9f;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .stat .value {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffd84a;
+    }
+
+    .coin-zone {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 340px;
+    }
+
+    .coin {
+      width: 255px;
+      height: 255px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 30%, #fff38d 0%, #ffd33d 22%, #b87a00 68%, #7b4e00 100%);
+      border: 8px solid #e3b11c;
+      box-shadow:
+        inset 0 0 30px rgba(255,255,255,.25),
+        0 0 0 7px rgba(255, 208, 40, .09),
+        0 18px 35px rgba(0,0,0,.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform .08s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .coin:active {
+      transform: scale(.94);
+    }
+
+    .parrot {
+      font-size: 125px;
+      filter: drop-shadow(0 7px 6px rgba(0,0,0,.28));
+      transform: rotate(-4deg);
+    }
+
+    .koki-name {
+      position: absolute;
+      bottom: 24px;
+      font-size: 31px;
+      font-weight: 900;
+      color: #151200;
+      text-shadow: 0 1px 0 #fff6a4;
+      letter-spacing: 2px;
+    }
+
+    .hint {
+      text-align: center;
+      color: #b7cbbf;
+      font-size: 14px;
+      margin-top: -6px;
+    }
+
+    .float {
+      position: fixed;
+      z-index: 20;
+      font-size: 28px;
+      font-weight: 900;
+      color: #ffe56d;
+      pointer-events: none;
+      animation: fly .75s ease-out forwards;
+      text-shadow: 0 2px 4px #000;
+    }
+
+    @keyframes fly {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-85px) scale(1.25); }
+    }
+
+    .energy-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .energy-bar {
+      height: 15px;
+      background: #08130e;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid #2d563f;
+    }
+
+    .energy-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #84ff7a, #d5ff4c);
+      transition: width .2s;
+    }
+
+    .section-title {
+      margin: 18px 0 10px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .upgrade {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: #10251b;
+      border: 1px solid #294d3a;
+      border-radius: 16px;
+      padding: 13px;
+      margin-bottom: 10px;
+    }
+
+    .upgrade strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .upgrade small {
+      color: #91aa9c;
+    }
+
+    .buy-btn {
+      min-width: 95px;
+      border: none;
+      border-radius: 13px;
+      padding: 10px 9px;
+      font-weight: 800;
+      background: linear-gradient(180deg, #ffd84a, #c59311);
+      color: #181300;
+      cursor: pointer;
+    }
+
+    .buy-btn:disabled {
+      filter: grayscale(1);
+      opacity: .45;
+    }
+
+    .contract {
+      word-break: break-all;
+      color: #85a695;
+      font-size: 11px;
+      line-height: 1.5;
+      margin-top: 10px;
+    }
+
+    .notice {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #94ad9
