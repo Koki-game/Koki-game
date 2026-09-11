@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b3b29">
+
+<link rel="manifest" href="manifest.json">
+
 <title>KOKI Game</title>
 
 <style>
@@ -15,14 +19,14 @@ body{
   margin:0;
   font-family:Arial,sans-serif;
   background:linear-gradient(#10452f,#03150e);
-  color:#fff;
+  color:white;
   min-height:100vh;
 }
 
 .app{
   max-width:430px;
   margin:auto;
-  padding:18px 16px 50px;
+  padding:16px 16px 95px;
 }
 
 .top{
@@ -42,7 +46,6 @@ body{
   width:44px;
   height:44px;
   border-radius:50%;
-  object-fit:cover;
 }
 
 .brand-name{
@@ -64,7 +67,7 @@ body{
 .subtitle{
   text-align:center;
   color:#a8bcb0;
-  margin:18px 0 22px;
+  margin:16px 0 20px;
 }
 
 .stats{
@@ -77,32 +80,36 @@ body{
   background:#0d291e;
   border:1px solid #315743;
   border-radius:20px;
-  padding:18px 10px;
+  padding:16px 10px;
   text-align:center;
 }
 
 .label{
   color:#9eafa6;
-  font-size:13px;
+  font-size:12px;
 }
 
 .value{
   margin-top:8px;
-  font-size:31px;
+  font-size:30px;
   font-weight:900;
   color:#ffd83d;
+}
+
+.level{
+  margin:14px 0 4px;
+  text-align:center;
+  color:#ffd83d;
+  font-weight:800;
 }
 
 .coin{
   width:270px;
   height:270px;
-  margin:34px auto 16px;
+  margin:28px auto 12px;
   border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
   cursor:pointer;
-  transition:transform .08s ease;
+  transition:.08s;
 }
 
 .coin:active{
@@ -114,20 +121,19 @@ body{
   height:100%;
   object-fit:contain;
   border-radius:50%;
-  display:block;
   filter:drop-shadow(0 14px 18px rgba(0,0,0,.35));
 }
 
 .tap-text{
   text-align:center;
   font-size:20px;
-  margin-bottom:28px;
+  margin-bottom:24px;
 }
 
 .energy-head{
   display:flex;
   justify-content:space-between;
-  font-size:19px;
+  font-size:18px;
 }
 
 .energy-bar{
@@ -135,14 +141,12 @@ body{
   background:#07120d;
   border-radius:20px;
   overflow:hidden;
-  margin-top:9px;
+  margin-top:8px;
 }
 
 .energy-fill{
   height:100%;
-  width:100%;
   background:linear-gradient(90deg,#74ff68,#a5ff70);
-  transition:width .2s;
 }
 
 .center{
@@ -150,66 +154,77 @@ body{
 }
 
 .daily{
-  margin-top:24px;
+  margin-top:20px;
   border:0;
   border-radius:16px;
   background:#ffd83d;
   color:#1c1600;
-  font-size:17px;
+  font-size:16px;
   font-weight:900;
   padding:14px 21px;
 }
 
-.daily:disabled{
-  opacity:.55;
+.daily:disabled,
+.buy:disabled,
+.task-btn:disabled{
+  opacity:.45;
 }
 
 .section{
-  margin-top:30px;
+  margin-top:26px;
   font-size:19px;
   font-weight:800;
 }
 
-.upgrade{
+.card,
+.upgrade,
+.task,
+.friend-card,
+.leader-row{
   margin-top:12px;
   background:#0d291e;
   border:1px solid #315743;
   border-radius:20px;
-  padding:16px;
+  padding:15px;
+}
+
+.upgrade,
+.task,
+.leader-row{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  gap:12px;
 }
 
-.upgrade-title{
-  font-size:18px;
+.upgrade-title,
+.task-title{
+  font-size:17px;
   font-weight:800;
 }
 
-.upgrade small{
-  color:#c0ccc6;
+small,
+.muted{
+  color:#b8c8bf;
 }
 
-.buy{
-  min-width:95px;
+.buy,
+.task-btn{
+  min-width:92px;
   border:0;
-  border-radius:16px;
-  padding:13px;
+  border-radius:15px;
+  padding:12px;
   background:#ffd83d;
   color:#171100;
-  font-size:18px;
+  font-size:15px;
   font-weight:900;
 }
 
-.buy:disabled{
-  opacity:.45;
-}
-
 .token{
-  margin-top:26px;
+  margin-top:24px;
   text-align:center;
   color:#90a69a;
-  font-size:12px;
+  font-size:11px;
   line-height:1.6;
 }
 
@@ -217,16 +232,49 @@ body{
   word-break:break-all;
 }
 
-.wallet-info{
-  margin-top:8px;
-  color:#b6c7bd;
-  font-size:12px;
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.bottom-nav{
+  position:fixed;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:min(430px,100%);
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  background:#05150e;
+  border-top:1px solid #315743;
+  padding:8px 6px;
+  z-index:20;
+}
+
+.nav{
+  border:0;
+  background:transparent;
+  color:#80998b;
+  padding:7px 2px;
+  font-size:11px;
+}
+
+.nav span{
+  display:block;
+  font-size:21px;
+}
+
+.nav.active{
+  color:#ffd83d;
 }
 
 .toast{
   position:fixed;
   left:50%;
-  top:20px;
+  top:18px;
   transform:translateX(-50%);
   background:#14251c;
   border:1px solid #496d5a;
@@ -241,6 +289,52 @@ body{
 .toast.show{
   opacity:1;
 }
+
+.float{
+  position:fixed;
+  z-index:99;
+  color:#ffe04b;
+  font-size:26px;
+  font-weight:900;
+  pointer-events:none;
+  animation:fly .7s forwards;
+}
+
+@keyframes fly{
+  to{
+    opacity:0;
+    transform:translateY(-80px);
+  }
+}
+
+.primary{
+  width:100%;
+  margin-top:14px;
+  border:1px solid #d9b12a;
+  background:#14251c;
+  color:#ffd83d;
+  padding:13px;
+  border-radius:14px;
+  font-weight:800;
+}
+
+.copybox{
+  width:100%;
+  background:#071c13;
+  border:1px solid #315743;
+  border-radius:12px;
+  color:white;
+  padding:11px;
+  font-size:12px;
+  word-break:break-all;
+}
+
+.streak{
+  margin-top:12px;
+  text-align:center;
+  color:#ffd83d;
+  font-weight:800;
+}
 </style>
 </head>
 
@@ -248,294 +342,978 @@ body{
 
 <div class="app">
 
-  <div class="top">
-    <div class="brand">
-      <img src="koki.png" alt="KOKI">
-      <div class="brand-name">KOKI</div>
-    </div>
-
-    <button class="wallet" id="walletBtn">
-      Connect Wallet
-    </button>
+<div class="top">
+  <div class="brand">
+    <img src="koki.png">
+    <div class="brand-name">KOKI</div>
   </div>
 
-  <div class="subtitle">
-    Tap-to-Earn Game • BNB Chain
-  </div>
+  <button class="wallet" id="walletBtn">
+    Connect Wallet
+  </button>
+</div>
 
-  <div class="stats">
-    <div class="box">
-      <div class="label">POINTS</div>
-      <div class="value" id="points">0</div>
-    </div>
+<div class="subtitle">
+Tap • Earn Points • BNB Chain
+</div>
 
-    <div class="box">
-      <div class="label">TAP POWER</div>
-      <div class="value">+<span id="power">1</span></div>
-    </div>
-  </div>
+<section class="page active" id="homePage">
 
-  <div class="coin" id="coin">
-    <img class="parrot" src="koki.png" alt="KOKI">
-  </div>
+<div class="stats">
 
-  <div class="tap-text">👆 Tap KOKI</div>
+<div class="box">
+<div class="label">POINTS</div>
+<div class="value" id="points">0</div>
+</div>
 
-  <div class="energy-head">
-    <span>⚡ Energy</span>
-    <span>
-      <span id="energy">1000</span> /
-      <span id="maxEnergy">1000</span>
-    </span>
-  </div>
-
-  <div class="energy-bar">
-    <div class="energy-fill" id="energyFill"></div>
-  </div>
-
-  <div class="center">
-    <button class="daily" id="dailyBtn">
-      🎁 Daily Bonus +500
-    </button>
-  </div>
-
-  <div class="section">Upgrades</div>
-
-  <div class="upgrade">
-    <div>
-      <div class="upgrade-title">🦜 Strong Beak</div>
-      <small>Tap power +1</small>
-    </div>
-
-    <button class="buy" id="tapUpgrade">100</button>
-  </div>
-
-  <div class="upgrade">
-    <div>
-      <div class="upgrade-title">⚡ Energy Boost</div>
-      <small>Maximum energy +250</small>
-    </div>
-
-    <button class="buy" id="energyUpgrade">250</button>
-  </div>
-
-  <div class="token">
-    <b>KOKI Contract</b><br>
-    <div class="contract">
-      0x3b049d895d80552ea662a2df8cfbdba62ff04444
-    </div>
-
-    <div class="wallet-info" id="walletInfo">
-      Wallet not connected
-    </div>
-  </div>
+<div class="box">
+<div class="label">TAP POWER</div>
+<div class="value">+<span id="power">1</span></div>
+</div>
 
 </div>
+
+<div class="level" id="levelText">
+🥉 Bronze
+</div>
+
+<div class="coin" id="coin">
+<img class="parrot" src="koki.png">
+</div>
+
+<div class="tap-text">
+👆 Tap KOKI
+</div>
+
+<div class="energy-head">
+<span>⚡ Energy</span>
+
+<span>
+<span id="energy">1000</span> /
+<span id="maxEnergy">1000</span>
+</span>
+</div>
+
+<div class="energy-bar">
+<div class="energy-fill" id="energyFill"></div>
+</div>
+
+<div class="center">
+<button class="daily" id="dailyBtn">
+🎁 Daily Bonus +500
+</button>
+</div>
+
+<div class="streak" id="streakText">
+🔥 Daily streak: 0
+</div>
+
+<div class="section">Upgrades</div>
+
+<div class="upgrade">
+<div>
+<div class="upgrade-title">🦜 Strong Beak</div>
+<small>Tap power +1</small>
+</div>
+
+<button class="buy" id="tapUpgrade">
+100
+</button>
+</div>
+
+<div class="upgrade">
+
+<div>
+<div class="upgrade-title">⚡ Energy Boost</div>
+<small>Maximum energy +250</small>
+</div>
+
+<button class="buy" id="energyUpgrade">
+250
+</button>
+
+</div>
+
+<button class="primary" id="installBtn">
+📲 Install KOKI
+</button>
+
+<div class="token">
+
+<b>KOKI Contract</b>
+
+<div class="contract">
+0x3b049d895d80552ea662a2df8cfbdba62ff04444
+</div>
+
+<div id="walletInfo">
+Wallet not connected
+</div>
+
+</div>
+
+</section>
+
+<section class="page" id="earnPage">
+
+<div class="section">
+🎯 Earn
+</div>
+
+<div class="task">
+
+<div>
+<div class="task-title">
+Tap 20 times
+</div>
+
+<small id="tapTaskText">
+0 / 20 taps
+</small>
+</div>
+
+<button class="task-btn" id="tapTaskBtn">
++200
+</button>
+
+</div>
+
+<div class="task">
+
+<div>
+<div class="task-title">
+Claim Daily Bonus
+</div>
+
+<small>
+Claim daily reward
+</small>
+</div>
+
+<button class="task-btn" id="dailyTaskBtn">
++150
+</button>
+
+</div>
+
+<div class="task">
+
+<div>
+<div class="task-title">
+Connect Wallet
+</div>
+
+<small>
+Optional wallet task
+</small>
+</div>
+
+<button class="task-btn" id="walletTaskBtn">
++250
+</button>
+
+</div>
+
+<div class="card">
+<b>ℹ️ Game Points</b>
+
+<p class="muted">
+Points are stored on this device for now.
+A server/database will be needed later for a real global leaderboard.
+</p>
+
+</div>
+
+</section>
+
+<section class="page" id="friendsPage">
+
+<div class="section">
+👥 Friends
+</div>
+
+<div class="friend-card">
+
+<b>Invite friends</b>
+
+<p class="muted">
+Share your KOKI game link.
+</p>
+
+<div class="copybox" id="refLink"></div>
+
+<button class="primary" id="shareBtn">
+🔗 Share Invite
+</button>
+
+</div>
+
+<div class="card">
+
+<b>Invites</b>
+
+<div class="value" id="inviteCount">
+0
+</div>
+
+<div class="muted">
+Local prototype
+</div>
+
+</div>
+
+</section>
+
+<section class="page" id="leadersPage">
+
+<div class="section">
+🏆 Leaderboard
+</div>
+
+<div class="leader-row">
+
+<div>
+<div style="font-size:22px;font-weight:900;color:#ffd83d">
+#1
+</div>
+
+<small>
+YOU • this device
+</small>
+</div>
+
+<div class="value" id="leaderPoints">
+0
+</div>
+
+</div>
+
+<div class="card">
+
+<b>Global leaderboard coming next</b>
+
+<p class="muted">
+For real players we will connect a database/backend later.
+</p>
+
+</div>
+
+</section>
+
+</div>
+
+<nav class="bottom-nav">
+
+<button class="nav active" data-page="homePage">
+<span>🏠</span>
+Home
+</button>
+
+<button class="nav" data-page="earnPage">
+<span>🎯</span>
+Earn
+</button>
+
+<button class="nav" data-page="friendsPage">
+<span>👥</span>
+Friends
+</button>
+
+<button class="nav" data-page="leadersPage">
+<span>🏆</span>
+Leaders
+</button>
+
+</nav>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const CONTRACT = "0x3b049d895d80552ea662a2df8cfbdba62ff04444";
 
-let state = JSON.parse(localStorage.getItem("koki_state")) || {
-  points: 0,
-  power: 1,
-  energy: 1000,
-  maxEnergy: 1000,
-  tapCost: 100,
-  energyCost: 250,
-  lastDaily: 0
+const DEFAULT = {
+points:0,
+power:1,
+energy:1000,
+maxEnergy:1000,
+tapCost:100,
+energyCost:250,
+lastDaily:0,
+streak:0,
+lastStreakDay:"",
+taps:0,
+tasks:{
+tap:false,
+daily:false,
+wallet:false
+},
+walletConnected:false,
+invites:0
 };
 
-const pointsEl = document.getElementById("points");
-const powerEl = document.getElementById("power");
-const energyEl = document.getElementById("energy");
-const maxEnergyEl = document.getElementById("maxEnergy");
-const energyFill = document.getElementById("energyFill");
-const tapUpgrade = document.getElementById("tapUpgrade");
-const energyUpgrade = document.getElementById("energyUpgrade");
-const dailyBtn = document.getElementById("dailyBtn");
-const walletBtn = document.getElementById("walletBtn");
-const walletInfo = document.getElementById("walletInfo");
-const coin = document.getElementById("coin");
+let state = {
+...DEFAULT,
+...JSON.parse(localStorage.getItem("koki_state") || "{}")
+};
 
-function save() {
-  localStorage.setItem("koki_state", JSON.stringify(state));
+state.tasks = {
+...DEFAULT.tasks,
+...(state.tasks || {})
+};
+
+const $ = id => document.getElementById(id);
+
+function save(){
+localStorage.setItem(
+"koki_state",
+JSON.stringify(state)
+);
 }
 
-function toast(text) {
-  const t = document.getElementById("toast");
-  t.textContent = text;
-  t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 1600);
+function toast(text){
+
+const t = $("toast");
+
+t.textContent = text;
+
+t.classList.add("show");
+
+setTimeout(()=>{
+t.classList.remove("show");
+},1600);
+
 }
 
-function draw() {
-  pointsEl.textContent = Math.floor(state.points);
-  powerEl.textContent = state.power;
-  energyEl.textContent = Math.floor(state.energy);
-  maxEnergyEl.textContent = state.maxEnergy;
+function getLevel(){
 
-  const pct = Math.max(
-    0,
-    Math.min(100, (state.energy / state.maxEnergy) * 100)
-  );
+if(state.points >= 10000)
+return "💎 Diamond";
 
-  energyFill.style.width = pct + "%";
+if(state.points >= 5000)
+return "🥇 Gold";
 
-  tapUpgrade.textContent = state.tapCost;
-  energyUpgrade.textContent = state.energyCost;
+if(state.points >= 1500)
+return "🥈 Silver";
 
-  tapUpgrade.disabled = state.points < state.tapCost;
-  energyUpgrade.disabled = state.points < state.energyCost;
+return "🥉 Bronze";
 
-  const ready =
-    Date.now() - state.lastDaily >= 86400000;
-
-  dailyBtn.disabled = !ready;
-
-  dailyBtn.textContent =
-    ready
-      ? "🎁 Daily Bonus +500"
-      : "🎁 Bonus claimed";
 }
 
-coin.addEventListener("click", () => {
-  if (state.energy < 1) {
-    toast("Not enough energy ⚡");
-    return;
-  }
+function draw(){
 
-  state.points += state.power;
-  state.energy -= 1;
+$("points").textContent =
+Math.floor(state.points);
 
-  if (navigator.vibrate) {
-    navigator.vibrate(15);
-  }
+$("power").textContent =
+state.power;
 
-  save();
-  draw();
-});
+$("energy").textContent =
+Math.floor(state.energy);
 
-tapUpgrade.addEventListener("click", () => {
-  if (state.points < state.tapCost) return;
+$("maxEnergy").textContent =
+state.maxEnergy;
 
-  state.points -= state.tapCost;
-  state.power += 1;
-  state.tapCost = Math.ceil(state.tapCost * 1.8);
+$("energyFill").style.width =
+Math.max(
+0,
+Math.min(
+100,
+state.energy / state.maxEnergy * 100
+)
+)+"%";
 
-  save();
-  draw();
+$("tapUpgrade").textContent =
+state.tapCost;
 
-  toast("Tap power upgraded 🦜");
-});
+$("energyUpgrade").textContent =
+state.energyCost;
 
-energyUpgrade.addEventListener("click", () => {
-  if (state.points < state.energyCost) return;
+$("tapUpgrade").disabled =
+state.points < state.tapCost;
 
-  state.points -= state.energyCost;
-  state.maxEnergy += 250;
-  state.energy += 250;
-  state.energyCost = Math.ceil(state.energyCost * 1.8);
+$("energyUpgrade").disabled =
+state.points < state.energyCost;
 
-  save();
-  draw();
+const ready =
+Date.now() - state.lastDaily >= 86400000;
 
-  toast("Energy upgraded ⚡");
-});
+$("dailyBtn").disabled =
+!ready;
 
-dailyBtn.addEventListener("click", () => {
-  if (Date.now() - state.lastDaily < 86400000) return;
+$("dailyBtn").textContent =
+ready
+? "🎁 Daily Bonus +500"
+: "🎁 Bonus claimed";
 
-  state.points += 500;
-  state.lastDaily = Date.now();
+$("levelText").textContent =
+getLevel();
 
-  save();
-  draw();
+$("streakText").textContent =
+"🔥 Daily streak: " +
+state.streak;
 
-  toast("+500 Daily Bonus 🎁");
-});
+$("tapTaskText").textContent =
+Math.min(state.taps,20) +
+" / 20 taps";
 
-setInterval(() => {
-  if (state.energy < state.maxEnergy) {
-    state.energy = Math.min(
-      state.maxEnergy,
-      state.energy + 2
-    );
+$("tapTaskBtn").disabled =
+state.tasks.tap ||
+state.taps < 20;
 
-    save();
-    draw();
-  }
-}, 1000);
+$("dailyTaskBtn").disabled =
+state.tasks.daily ||
+state.lastDaily === 0;
 
-async function connectWallet() {
-  if (!window.ethereum) {
-    toast("Open in MetaMask or another Web3 wallet browser");
-    return;
-  }
+$("walletTaskBtn").disabled =
+state.tasks.wallet ||
+!state.walletConnected;
 
-  try {
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts"
-    });
+$("leaderPoints").textContent =
+Math.floor(state.points);
 
-    let chainId = await window.ethereum.request({
-      method: "eth_chainId"
-    });
+$("inviteCount").textContent =
+state.invites;
 
-    if (chainId !== "0x38") {
-      try {
-        await window.ethereum.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: "0x38" }]
-        });
-      } catch (switchError) {
-        if (switchError.code === 4902) {
-          await window.ethereum.request({
-            method: "wallet_addEthereumChain",
-            params: [{
-              chainId: "0x38",
-              chainName: "BNB Smart Chain",
-              nativeCurrency: {
-                name: "BNB",
-                symbol: "BNB",
-                decimals: 18
-              },
-              rpcUrls: [
-                "https://bsc-dataseed.binance.org/"
-              ],
-              blockExplorerUrls: [
-                "https://bscscan.com"
-              ]
-            }]
-          });
-        } else {
-          throw switchError;
-        }
-      }
-    }
+$("refLink").textContent =
+referralLink();
 
-    const address = accounts[0];
-
-    walletBtn.textContent =
-      address.slice(0, 6) +
-      "..." +
-      address.slice(-4);
-
-    walletInfo.innerHTML =
-      "Wallet connected ✅<br>" + address;
-
-    toast("Wallet connected ✅");
-
-  } catch (error) {
-    console.error(error);
-    toast("Wallet connection failed");
-  }
 }
 
-walletBtn.addEventListener("click", connectWallet);
+function floatingScore(event){
+
+const f =
+document.createElement("div");
+
+f.className =
+"float";
+
+f.textContent =
+"+" + state.power;
+
+f.style.left =
+(event.clientX - 15) + "px";
+
+f.style.top =
+(event.clientY - 10) + "px";
+
+document.body.appendChild(f);
+
+setTimeout(()=>{
+f.remove();
+},700);
+
+}
+
+$("coin").addEventListener(
+"click",
+event=>{
+
+if(state.energy < 1){
+
+toast(
+"Not enough energy ⚡"
+);
+
+return;
+
+}
+
+state.points +=
+state.power;
+
+state.energy -= 1;
+
+state.taps += 1;
+
+floatingScore(event);
+
+if(navigator.vibrate){
+
+navigator.vibrate(15);
+
+}
+
+save();
 
 draw();
+
+});
+
+$("tapUpgrade").onclick =
+()=>{
+
+if(
+state.points <
+state.tapCost
+) return;
+
+state.points -=
+state.tapCost;
+
+state.power += 1;
+
+state.tapCost =
+Math.ceil(
+state.tapCost * 1.8
+);
+
+save();
+
+draw();
+
+toast(
+"Tap power upgraded 🦜"
+);
+
+};
+
+$("energyUpgrade").onclick =
+()=>{
+
+if(
+state.points <
+state.energyCost
+) return;
+
+state.points -=
+state.energyCost;
+
+state.maxEnergy += 250;
+
+state.energy += 250;
+
+state.energyCost =
+Math.ceil(
+state.energyCost * 1.8
+);
+
+save();
+
+draw();
+
+toast(
+"Energy upgraded ⚡"
+);
+
+};
+
+function today(){
+
+return new Date()
+.toISOString()
+.slice(0,10);
+
+}
+
+$("dailyBtn").onclick =
+()=>{
+
+if(
+Date.now() -
+state.lastDaily <
+86400000
+) return;
+
+const yesterday =
+new Date(
+Date.now() -
+86400000
+)
+.toISOString()
+.slice(0,10);
+
+if(
+state.lastStreakDay ===
+yesterday
+){
+
+state.streak += 1;
+
+}else{
+
+state.streak = 1;
+
+}
+
+state.lastStreakDay =
+today();
+
+const reward =
+500 +
+Math.min(
+state.streak * 25,
+250
+);
+
+state.points +=
+reward;
+
+state.lastDaily =
+Date.now();
+
+save();
+
+draw();
+
+toast(
+"+" + reward +
+" Daily Reward 🎁"
+);
+
+};
+
+function claimTask(
+key,
+reward
+){
+
+if(
+state.tasks[key]
+) return;
+
+state.tasks[key] =
+true;
+
+state.points +=
+reward;
+
+save();
+
+draw();
+
+toast(
+"+" + reward +
+" points ✅"
+);
+
+}
+
+$("tapTaskBtn").onclick =
+()=>claimTask(
+"tap",
+200
+);
+
+$("dailyTaskBtn").onclick =
+()=>claimTask(
+"daily",
+150
+);
+
+$("walletTaskBtn").onclick =
+()=>claimTask(
+"wallet",
+250
+);
+
+setInterval(()=>{
+
+if(
+state.energy <
+state.maxEnergy
+){
+
+state.energy =
+Math.min(
+state.maxEnergy,
+state.energy + 2
+);
+
+save();
+
+draw();
+
+}
+
+},1000);
+
+async function connectWallet(){
+
+if(!window.ethereum){
+
+toast(
+"Open in a Web3 wallet browser"
+);
+
+return;
+
+}
+
+try{
+
+const accounts =
+await window.ethereum.request({
+method:"eth_requestAccounts"
+});
+
+let chainId =
+await window.ethereum.request({
+method:"eth_chainId"
+});
+
+if(chainId !== "0x38"){
+
+try{
+
+await window.ethereum.request({
+method:
+"wallet_switchEthereumChain",
+params:[
+{
+chainId:"0x38"
+}
+]
+});
+
+}catch(error){
+
+if(error.code === 4902){
+
+await window.ethereum.request({
+
+method:
+"wallet_addEthereumChain",
+
+params:[
+{
+chainId:"0x38",
+
+chainName:
+"BNB Smart Chain",
+
+nativeCurrency:{
+name:"BNB",
+symbol:"BNB",
+decimals:18
+},
+
+rpcUrls:[
+"https://bsc-dataseed.binance.org/"
+],
+
+blockExplorerUrls:[
+"https://bscscan.com"
+]
+
+}
+]
+
+});
+
+}
+
+}
+
+}
+
+const address =
+accounts[0];
+
+$("walletBtn").textContent =
+address.slice(0,6) +
+"..." +
+address.slice(-4);
+
+$("walletInfo").innerHTML =
+"Wallet connected ✅<br>" +
+address;
+
+state.walletConnected =
+true;
+
+save();
+
+draw();
+
+toast(
+"Wallet connected ✅"
+);
+
+}catch(error){
+
+toast(
+"Wallet connection cancelled"
+);
+
+}
+
+}
+
+$("walletBtn").onclick =
+connectWallet;
+
+document
+.querySelectorAll(".nav")
+.forEach(button=>{
+
+button.onclick =
+()=>{
+
+document
+.querySelectorAll(".nav")
+.forEach(n=>
+n.classList.remove("active")
+);
+
+document
+.querySelectorAll(".page")
+.forEach(p=>
+p.classList.remove("active")
+);
+
+button
+.classList
+.add("active");
+
+$(
+button.dataset.page
+)
+.classList
+.add("active");
+
+window.scrollTo(
+0,
+0
+);
+
+};
+
+});
+
+function referralLink(){
+
+const base =
+location.href
+.split("?")[0]
+.split("#")[0];
+
+return base +
+"?ref=koki";
+
+}
+
+$("shareBtn").onclick =
+async ()=>{
+
+const url =
+referralLink();
+
+try{
+
+if(navigator.share){
+
+await navigator.share({
+
+title:
+"KOKI Game",
+
+text:
+"Play KOKI with me!",
+
+url:url
+
+});
+
+}else{
+
+await navigator.clipboard
+.writeText(url);
+
+toast(
+"Invite link copied 🔗"
+);
+
+}
+
+}catch(error){}
+
+};
+
+const params =
+new URLSearchParams(
+location.search
+);
+
+if(
+params.get("ref") &&
+!localStorage.getItem(
+"koki_ref_bonus"
+)
+){
+
+state.points +=
+250;
+
+localStorage.setItem(
+"koki_ref_bonus",
+"1"
+);
+
+save();
+
+toast(
+"Referral bonus +250 🎉"
+);
+
+}
+
+let deferredPrompt =
+null;
+
+window.addEventListener(
+"beforeinstallprompt",
+event=>{
+
+event.preventDefault();
+
+deferredPrompt =
+event;
+
+});
+
+$("installBtn").onclick =
+async ()=>{
+
+if(
+deferredPrompt
+){
+
+deferredPrompt.prompt();
+
+await deferredPrompt
+.userChoice;
+
+deferredPrompt =
+null;
+
+}else{
+
+toast(
+"Browser menu → Add to Home screen"
+);
+
+}
+
+};
+
+if(
+"serviceWorker" in navigator
+){
+
+window.addEventListener(
+"load",
+()=>{
+
+navigator.serviceWorker
+.register("./sw.js")
+.catch(()=>{});
+
+}
+);
+
+}
+
+draw();
+
 </script>
 
 </body>
