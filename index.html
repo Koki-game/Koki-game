@@ -646,11 +646,16 @@ const db = firebase.firestore();
 auth.signInAnonymously()
   .then((result) => {
     const uid = result.user.uid;
+const playerRef = db.collection("players").doc(uid);
 
-    return db.collection("players").doc(uid).set({
+return playerRef.get().then((doc) => {
+  if (!doc.exists) {
+    return playerRef.set({
       points: 0,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true });
+    });
+  }
+});
   })
   .then(() => {
     console.log("KOKI player profile ready");
