@@ -1,266 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KOKI Game</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KOKI Game</title>
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background:
-        radial-gradient(circle at top, #173a2a 0%, #0d2018 35%, #07110d 100%);
-      color: white;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-    }
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(#123d2b,#06140e);
+  color:white;
+  min-height:100vh;
+}
+.app{
+  max-width:430px;
+  margin:auto;
+  padding:20px 16px 40px;
+  text-align:center;
+}
+h1{
+  color:#ffd83d;
+  margin:5px 0;
+  font-size:34px;
+}
+.subtitle{color:#a8c0b2;margin-bottom:20px}
 
-    .app {
-      width: 100%;
-      max-width: 430px;
-      min-height: 100vh;
-      padding: 16px 16px 95px;
-    }
+.stats{
+  display:flex;
+  gap:10px;
+}
+.box{
+  flex:1;
+  background:#10261c;
+  border:1px solid #315742;
+  border-radius:16px;
+  padding:14px;
+}
+.label{font-size:12px;color:#9db0a5}
+.value{
+  font-size:25px;
+  font-weight:bold;
+  color:#ffd83d;
+  margin-top:5px;
+}
 
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
+.coin{
+  width:250px;
+  height:250px;
+  margin:35px auto 18px;
+  border-radius:50%;
+  background:radial-gradient(circle,#ffe875,#d79a00);
+  border:8px solid #f0bd24;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  cursor:pointer;
+  box-shadow:0 15px 30px #0008;
+}
+.coin:active{transform:scale(.94)}
+.parrot{font-size:120px}
+.coin strong{
+  color:#171000;
+  font-size:28px;
+}
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+.energyText{
+  display:flex;
+  justify-content:space-between;
+  margin-top:20px;
+}
+.energyBar{
+  height:16px;
+  background:#07110c;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:7px;
+}
+.energyFill{
+  height:100%;
+  background:#7dff72;
+  width:100%;
+}
 
-    .logo {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-size: 28px;
-      background: linear-gradient(145deg, #ffd84a, #a56b00);
-      border: 2px solid #ffe783;
-      box-shadow: 0 0 18px rgba(255, 205, 45, .28);
-    }
+button{
+  border:0;
+  border-radius:13px;
+  padding:12px 18px;
+  font-weight:bold;
+  font-size:15px;
+  margin-top:15px;
+  background:#ffd83d;
+  color:#181300;
+}
+.upgrade{
+  margin-top:15px;
+  background:#10261c;
+  border:1px solid #315742;
+  padding:14px;
+  border-radius:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  text-align:left;
+}
+.upgrade button{margin:0}
+.contract{
+  margin-top:25px;
+  font-size:11px;
+  color:#91aa9c;
+  word-break:break-all;
+}
+</style>
+</head>
 
-    .brand h1 {
-      margin: 0;
-      font-size: 24px;
-      color: #ffd84a;
-      letter-spacing: 1px;
-    }
+<body>
+<div class="app">
 
-    .brand small {
-      color: #9bb9a8;
-    }
+<h1>🦜 KOKI</h1>
+<div class="subtitle">Tap-to-Earn Game • BNB Chain</div>
 
-    .wallet-btn,
-    .daily-btn {
-      border: 1px solid #7b6320;
-      background: linear-gradient(180deg, #282713, #17170d);
-      color: #ffd84a;
-      border-radius: 14px;
-      padding: 10px 12px;
-      font-weight: 700;
-      cursor: pointer;
-    }
+<div class="stats">
+  <div class="box">
+    <div class="label">POINTS</div>
+    <div class="value" id="points">0</div>
+  </div>
 
-    .wallet-btn:active,
-    .daily-btn:active {
-      transform: scale(.97);
-    }
+  <div class="box">
+    <div class="label">TAP POWER</div>
+    <div class="value">+<span id="power">1</span></div>
+  </div>
+</div>
 
-    .card {
-      margin-top: 16px;
-      background: rgba(20, 40, 31, .88);
-      border: 1px solid #2f5a45;
-      border-radius: 20px;
-      padding: 16px;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, .22);
-    }
+<div class="coin" id="coin">
+  <div class="parrot">🦜</div>
+  <strong>KOKI</strong>
+</div>
 
-    .stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+<div>👆 Tap KOKI</div>
 
-    .stat {
-      background: #0f251b;
-      border: 1px solid #244b38;
-      border-radius: 16px;
-      padding: 13px;
-      text-align: center;
-    }
+<div class="energyText">
+  <span>⚡ Energy</span>
+  <span><span id="energy">1000</span>/1000</span>
+</div>
 
-    .stat .label {
-      color: #94ad9f;
-      font-size: 12px;
-      margin-bottom: 5px;
-    }
+<div class="energyBar">
+  <div class="energyFill" id="energyFill"></div>
+</div>
 
-    .stat .value {
-      font-size: 22px;
-      font-weight: 800;
-      color: #ffd84a;
-    }
+<button id="bonus">🎁 Daily Bonus +500</button>
 
-    .coin-zone {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 340px;
-    }
+<div class="upgrade">
+  <div>
+    <b>🦜 Strong Beak</b><br>
+    <small>Tap power +1</small>
+  </div>
+  <button id="upgrade">100</button>
+</div>
 
-    .coin {
-      width: 255px;
-      height: 255px;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at 35% 30%, #fff38d 0%, #ffd33d 22%, #b87a00 68%, #7b4e00 100%);
-      border: 8px solid #e3b11c;
-      box-shadow:
-        inset 0 0 30px rgba(255,255,255,.25),
-        0 0 0 7px rgba(255, 208, 40, .09),
-        0 18px 35px rgba(0,0,0,.35);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform .08s ease;
-      position: relative;
-      overflow: hidden;
-    }
+<div class="contract">
+KOKI Contract:<br>
+0x3b049d895d80552ea662a2df8cfbdba62ff04444
+</div>
 
-    .coin:active {
-      transform: scale(.94);
-    }
+</div>
 
-    .parrot {
-      font-size: 125px;
-      filter: drop-shadow(0 7px 6px rgba(0,0,0,.28));
-      transform: rotate(-4deg);
-    }
+<script>
+let points=Number(localStorage.points||0);
+let power=Number(localStorage.power||1);
+let energy=Number(localStorage.energy||1000);
+let cost=Number(localStorage.cost||100);
 
-    .koki-name {
-      position: absolute;
-      bottom: 24px;
-      font-size: 31px;
-      font-weight: 900;
-      color: #151200;
-      text-shadow: 0 1px 0 #fff6a4;
-      letter-spacing: 2px;
-    }
+const p=document.getElementById("points");
+const pw=document.getElementById("power");
+const en=document.getElementById("energy");
+const fill=document.getElementById("energyFill");
+const up=document.getElementById("upgrade");
 
-    .hint {
-      text-align: center;
-      color: #b7cbbf;
-      font-size: 14px;
-      margin-top: -6px;
-    }
+function save(){
+ localStorage.points=points;
+ localStorage.power=power;
+ localStorage.energy=energy;
+ localStorage.cost=cost;
+}
 
-    .float {
-      position: fixed;
-      z-index: 20;
-      font-size: 28px;
-      font-weight: 900;
-      color: #ffe56d;
-      pointer-events: none;
-      animation: fly .75s ease-out forwards;
-      text-shadow: 0 2px 4px #000;
-    }
+function draw(){
+ p.innerText=points;
+ pw.innerText=power;
+ en.innerText=Math.floor(energy);
+ fill.style.width=(energy/1000*100)+"%";
+ up.innerText=cost;
+}
 
-    @keyframes fly {
-      0% { opacity: 1; transform: translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateY(-85px) scale(1.25); }
-    }
+document.getElementById("coin").onclick=()=>{
+ if(energy<1)return;
+ points+=power;
+ energy--;
+ if(navigator.vibrate)navigator.vibrate(15);
+ save();
+ draw();
+};
 
-    .energy-head {
-      display: flex;
-      justify-content: space-between;
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
+up.onclick=()=>{
+ if(points<cost)return;
+ points-=cost;
+ power++;
+ cost=Math.ceil(cost*1.8);
+ save();
+ draw();
+};
 
-    .energy-bar {
-      height: 15px;
-      background: #08130e;
-      border-radius: 999px;
-      overflow: hidden;
-      border: 1px solid #2d563f;
-    }
+document.getElementById("bonus").onclick=()=>{
+ points+=500;
+ save();
+ draw();
+};
 
-    .energy-fill {
-      height: 100%;
-      width: 100%;
-      background: linear-gradient(90deg, #84ff7a, #d5ff4c);
-      transition: width .2s;
-    }
+setInterval(()=>{
+ if(energy<1000){
+   energy=Math.min(1000,energy+2);
+   save();
+   draw();
+ }
+},1000);
 
-    .section-title {
-      margin: 18px 0 10px;
-      font-size: 18px;
-      font-weight: 800;
-    }
+draw();
+</script>
 
-    .upgrade {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      background: #10251b;
-      border: 1px solid #294d3a;
-      border-radius: 16px;
-      padding: 13px;
-      margin-bottom: 10px;
-    }
-
-    .upgrade strong {
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .upgrade small {
-      color: #91aa9c;
-    }
-
-    .buy-btn {
-      min-width: 95px;
-      border: none;
-      border-radius: 13px;
-      padding: 10px 9px;
-      font-weight: 800;
-      background: linear-gradient(180deg, #ffd84a, #c59311);
-      color: #181300;
-      cursor: pointer;
-    }
-
-    .buy-btn:disabled {
-      filter: grayscale(1);
-      opacity: .45;
-    }
-
-    .contract {
-      word-break: break-all;
-      color: #85a695;
-      font-size: 11px;
-      line-height: 1.5;
-      margin-top: 10px;
-    }
-
-    .notice {
-      margin-top: 12px;
-      font-size: 12px;
-      color: #94ad9
+</body>
+</html>
