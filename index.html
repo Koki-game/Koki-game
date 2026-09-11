@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KOKI Game</title>
 
 <style>
@@ -15,14 +15,14 @@ body{
   margin:0;
   font-family:Arial,sans-serif;
   background:linear-gradient(#10452f,#03150e);
-  color:white;
+  color:#fff;
   min-height:100vh;
 }
 
 .app{
   max-width:430px;
   margin:auto;
-  padding:18px 16px 45px;
+  padding:18px 16px 50px;
 }
 
 .top{
@@ -35,12 +35,12 @@ body{
 .brand{
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:9px;
 }
 
 .brand img{
-  width:45px;
-  height:45px;
+  width:44px;
+  height:44px;
   border-radius:50%;
   object-fit:cover;
 }
@@ -52,19 +52,19 @@ body{
 }
 
 .wallet{
-  border:1px solid #e4b72a;
-  background:#17251d;
+  border:1px solid #d9b12a;
+  background:#14251c;
   color:#ffd83d;
   padding:10px 12px;
-  border-radius:12px;
-  font-weight:bold;
+  border-radius:13px;
   font-size:12px;
+  font-weight:800;
 }
 
 .subtitle{
-  color:#a9bcb1;
   text-align:center;
-  margin:18px 0;
+  color:#a8bcb0;
+  margin:18px 0 22px;
 }
 
 .stats{
@@ -74,7 +74,7 @@ body{
 
 .box{
   flex:1;
-  background:#0c291d;
+  background:#0d291e;
   border:1px solid #315743;
   border-radius:20px;
   padding:18px 10px;
@@ -82,15 +82,15 @@ body{
 }
 
 .label{
-  color:#a4b4ac;
+  color:#9eafa6;
   font-size:13px;
 }
 
 .value{
   margin-top:8px;
-  color:#ffd83d;
   font-size:31px;
   font-weight:900;
+  color:#ffd83d;
 }
 
 .coin{
@@ -102,7 +102,7 @@ body{
   align-items:center;
   justify-content:center;
   cursor:pointer;
-  transition:.08s;
+  transition:transform .08s ease;
 }
 
 .coin:active{
@@ -127,7 +127,6 @@ body{
 .energy-head{
   display:flex;
   justify-content:space-between;
-  align-items:center;
   font-size:19px;
 }
 
@@ -140,18 +139,14 @@ body{
 }
 
 .energy-fill{
-  width:100%;
   height:100%;
+  width:100%;
   background:linear-gradient(90deg,#74ff68,#a5ff70);
-  transition:.2s;
+  transition:width .2s;
 }
 
 .center{
   text-align:center;
-}
-
-button{
-  cursor:pointer;
 }
 
 .daily{
@@ -172,7 +167,7 @@ button{
 .section{
   margin-top:30px;
   font-size:19px;
-  font-weight:bold;
+  font-weight:800;
 }
 
 .upgrade{
@@ -188,7 +183,7 @@ button{
 
 .upgrade-title{
   font-size:18px;
-  font-weight:bold;
+  font-weight:800;
 }
 
 .upgrade small{
@@ -241,7 +236,6 @@ button{
   pointer-events:none;
   transition:.2s;
   z-index:100;
-  text-align:center;
 }
 
 .toast.show{
@@ -270,7 +264,6 @@ button{
   </div>
 
   <div class="stats">
-
     <div class="box">
       <div class="label">POINTS</div>
       <div class="value" id="points">0</div>
@@ -280,16 +273,13 @@ button{
       <div class="label">TAP POWER</div>
       <div class="value">+<span id="power">1</span></div>
     </div>
-
   </div>
 
   <div class="coin" id="coin">
     <img class="parrot" src="koki.png" alt="KOKI">
   </div>
 
-  <div class="tap-text">
-    👆 Tap KOKI
-  </div>
+  <div class="tap-text">👆 Tap KOKI</div>
 
   <div class="energy-head">
     <span>⚡ Energy</span>
@@ -309,9 +299,7 @@ button{
     </button>
   </div>
 
-  <div class="section">
-    Upgrades
-  </div>
+  <div class="section">Upgrades</div>
 
   <div class="upgrade">
     <div>
@@ -319,9 +307,7 @@ button{
       <small>Tap power +1</small>
     </div>
 
-    <button class="buy" id="tapUpgrade">
-      100
-    </button>
+    <button class="buy" id="tapUpgrade">100</button>
   </div>
 
   <div class="upgrade">
@@ -330,9 +316,7 @@ button{
       <small>Maximum energy +250</small>
     </div>
 
-    <button class="buy" id="energyUpgrade">
-      250
-    </button>
+    <button class="buy" id="energyUpgrade">250</button>
   </div>
 
   <div class="token">
@@ -351,146 +335,208 @@ button{
 <div class="toast" id="toast"></div>
 
 <script>
+const CONTRACT = "0x3b049d895d80552ea662a2df8cfbdba62ff04444";
 
-const CONTRACT =
-"0x3b049d895d80552ea662a2df8cfbdba62ff04444";
-
-let state = JSON.parse(
-  localStorage.getItem("koki_state")
-) || {
-  points:0,
-  power:1,
-  energy:1000,
-  maxEnergy:1000,
-  tapCost:100,
-  energyCost:250,
-  lastDaily:0
+let state = JSON.parse(localStorage.getItem("koki_state")) || {
+  points: 0,
+  power: 1,
+  energy: 1000,
+  maxEnergy: 1000,
+  tapCost: 100,
+  energyCost: 250,
+  lastDaily: 0
 };
 
-const pointsEl =
-document.getElementById("points");
+const pointsEl = document.getElementById("points");
+const powerEl = document.getElementById("power");
+const energyEl = document.getElementById("energy");
+const maxEnergyEl = document.getElementById("maxEnergy");
+const energyFill = document.getElementById("energyFill");
+const tapUpgrade = document.getElementById("tapUpgrade");
+const energyUpgrade = document.getElementById("energyUpgrade");
+const dailyBtn = document.getElementById("dailyBtn");
+const walletBtn = document.getElementById("walletBtn");
+const walletInfo = document.getElementById("walletInfo");
+const coin = document.getElementById("coin");
 
-const powerEl =
-document.getElementById("power");
-
-const energyEl =
-document.getElementById("energy");
-
-const maxEnergyEl =
-document.getElementById("maxEnergy");
-
-const energyFill =
-document.getElementById("energyFill");
-
-const tapUpgrade =
-document.getElementById("tapUpgrade");
-
-const energyUpgrade =
-document.getElementById("energyUpgrade");
-
-const dailyBtn =
-document.getElementById("dailyBtn");
-
-function save(){
-  localStorage.setItem(
-    "koki_state",
-    JSON.stringify(state)
-  );
+function save() {
+  localStorage.setItem("koki_state", JSON.stringify(state));
 }
 
-function toast(text){
-
-  const t =
-  document.getElementById("toast");
-
-  t.innerText=text;
-
+function toast(text) {
+  const t = document.getElementById("toast");
+  t.textContent = text;
   t.classList.add("show");
-
-  setTimeout(()=>{
-    t.classList.remove("show");
-  },1800);
+  setTimeout(() => t.classList.remove("show"), 1600);
 }
 
-function draw(){
+function draw() {
+  pointsEl.textContent = Math.floor(state.points);
+  powerEl.textContent = state.power;
+  energyEl.textContent = Math.floor(state.energy);
+  maxEnergyEl.textContent = state.maxEnergy;
 
-  pointsEl.innerText =
-  Math.floor(state.points);
+  const pct = Math.max(
+    0,
+    Math.min(100, (state.energy / state.maxEnergy) * 100)
+  );
 
-  powerEl.innerText =
-  state.power;
+  energyFill.style.width = pct + "%";
 
-  energyEl.innerText =
-  Math.floor(state.energy);
+  tapUpgrade.textContent = state.tapCost;
+  energyUpgrade.textContent = state.energyCost;
 
-  maxEnergyEl.innerText =
-  state.maxEnergy;
-
-  const percent =
-  state.energy /
-  state.maxEnergy *
-  100;
-
-  energyFill.style.width =
-  percent+"%";
-
-  tapUpgrade.innerText =
-  state.tapCost;
-
-  energyUpgrade.innerText =
-  state.energyCost;
-
-  tapUpgrade.disabled =
-  state.points < state.tapCost;
-
-  energyUpgrade.disabled =
-  state.points < state.energyCost;
+  tapUpgrade.disabled = state.points < state.tapCost;
+  energyUpgrade.disabled = state.points < state.energyCost;
 
   const ready =
-  Date.now() - state.lastDaily >=
-  86400000;
+    Date.now() - state.lastDaily >= 86400000;
 
   dailyBtn.disabled = !ready;
 
-  dailyBtn.innerText =
-  ready
-  ? "🎁 Daily Bonus +500"
-  : "🎁 Bonus claimed";
+  dailyBtn.textContent =
+    ready
+      ? "🎁 Daily Bonus +500"
+      : "🎁 Bonus claimed";
 }
 
-document.getElementById("coin")
-.onclick=()=>{
-
-  if(state.energy < 1){
+coin.addEventListener("click", () => {
+  if (state.energy < 1) {
     toast("Not enough energy ⚡");
     return;
   }
 
   state.points += state.power;
-
   state.energy -= 1;
 
-  if(navigator.vibrate){
+  if (navigator.vibrate) {
     navigator.vibrate(15);
   }
 
   save();
   draw();
-};
+});
 
-tapUpgrade.onclick=()=>{
-
-  if(state.points < state.tapCost)
-  return;
+tapUpgrade.addEventListener("click", () => {
+  if (state.points < state.tapCost) return;
 
   state.points -= state.tapCost;
-
-  state.power++;
-
-  state.tapCost =
-  Math.ceil(state.tapCost * 1.8);
+  state.power += 1;
+  state.tapCost = Math.ceil(state.tapCost * 1.8);
 
   save();
   draw();
 
-  toast
+  toast("Tap power upgraded 🦜");
+});
+
+energyUpgrade.addEventListener("click", () => {
+  if (state.points < state.energyCost) return;
+
+  state.points -= state.energyCost;
+  state.maxEnergy += 250;
+  state.energy += 250;
+  state.energyCost = Math.ceil(state.energyCost * 1.8);
+
+  save();
+  draw();
+
+  toast("Energy upgraded ⚡");
+});
+
+dailyBtn.addEventListener("click", () => {
+  if (Date.now() - state.lastDaily < 86400000) return;
+
+  state.points += 500;
+  state.lastDaily = Date.now();
+
+  save();
+  draw();
+
+  toast("+500 Daily Bonus 🎁");
+});
+
+setInterval(() => {
+  if (state.energy < state.maxEnergy) {
+    state.energy = Math.min(
+      state.maxEnergy,
+      state.energy + 2
+    );
+
+    save();
+    draw();
+  }
+}, 1000);
+
+async function connectWallet() {
+  if (!window.ethereum) {
+    toast("Open in MetaMask or another Web3 wallet browser");
+    return;
+  }
+
+  try {
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts"
+    });
+
+    let chainId = await window.ethereum.request({
+      method: "eth_chainId"
+    });
+
+    if (chainId !== "0x38") {
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: "0x38" }]
+        });
+      } catch (switchError) {
+        if (switchError.code === 4902) {
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [{
+              chainId: "0x38",
+              chainName: "BNB Smart Chain",
+              nativeCurrency: {
+                name: "BNB",
+                symbol: "BNB",
+                decimals: 18
+              },
+              rpcUrls: [
+                "https://bsc-dataseed.binance.org/"
+              ],
+              blockExplorerUrls: [
+                "https://bscscan.com"
+              ]
+            }]
+          });
+        } else {
+          throw switchError;
+        }
+      }
+    }
+
+    const address = accounts[0];
+
+    walletBtn.textContent =
+      address.slice(0, 6) +
+      "..." +
+      address.slice(-4);
+
+    walletInfo.innerHTML =
+      "Wallet connected ✅<br>" + address;
+
+    toast("Wallet connected ✅");
+
+  } catch (error) {
+    console.error(error);
+    toast("Wallet connection failed");
+  }
+}
+
+walletBtn.addEventListener("click", connectWallet);
+
+draw();
+</script>
+
+</body>
+</html>
