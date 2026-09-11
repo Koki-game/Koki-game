@@ -627,7 +627,22 @@ Leaders
 </nav>
 
 <div class="toast" id="toast"></div>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDOB6XzlbbtifNjy4fgdKqCaFn1wMg1N5o",
+  authDomain: "koki-game.firebaseapp.com",
+  projectId: "koki-game",
+  storageBucket: "koki-game.firebasestorage.app",
+  messagingSenderId: "926136206820",
+  appId: "1:926136206820:web:b346733b1268bed7f2b3f1"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+</script>
 <script>
 
 const DEFAULT = {
