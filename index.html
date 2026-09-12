@@ -765,14 +765,14 @@ function loadLeaderboard(){
         const data = doc.data();
         const points = data.points || 0;
         const shortId = doc.id.slice(0, 8);
-
+const playerName = data.nickname || shortId;
         html += `
           <div class="leader-row">
             <div>
               <div style="font-size:22px;font-weight:900;color:#ffd83d">
                 #${rank}
               </div>
-              <small>${shortId}</small>
+              <small>${playerName}</small>
             </div>
 
             <div class="value">
