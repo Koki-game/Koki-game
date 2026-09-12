@@ -628,6 +628,9 @@ const auth = firebase.auth();
     const playerRef = db.collection("players").doc(user.uid);
 
     playerRef.get().then((doc) => {
+      if (doc.exists && doc.data().nickname) {
+  document.getElementById("googleLoginBtn").textContent = doc.data().nickname;
+}
       if (!doc.exists) {
         return playerRef.set({
           points: 0,
