@@ -715,7 +715,10 @@ if(user){
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
   }, { merge: true })
   .then(() => {
-    toast("✅ Cloud saved: " + Math.floor(state.points));
+  toast(
+  "✅ " + Math.floor(state.points) +
+  " | UID: " + user.uid.slice(0, 8)
+);
   })
   .catch((error) => {
     toast("❌ Firebase error");
