@@ -695,9 +695,10 @@ $("googleLoginBtn").addEventListener("click", async () => {
       if (!nickname) {
         nickname = "KOKI_" + result.user.uid.slice(0, 6);
       }
-
+const savedRef = localStorage.getItem("koki_referrer");
   await playerRef.set({
-  nickname: nickname
+  nickname: nickname,
+    ...(savedRef ? { referredByCode: savedRef } : {})
 }, { merge: true });
     }
 const updatedDoc = await playerRef.get();
@@ -1313,7 +1314,11 @@ window.scrollTo(
 };
 
 });
+const incomingRef = new URLSearchParams(window.location.search).get("ref");
 
+if (incomingRef) {
+  localStorage.setItem("koki_referrer", incomingRef);
+}
 function referralLink(){
 
 const base =
