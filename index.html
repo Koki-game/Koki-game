@@ -1321,8 +1321,10 @@ location.href
 .split("?")[0]
 .split("#")[0];
 
-return base +
-"?ref=koki";
+const user = auth.currentUser;
+const referralCode = user ? user.uid.slice(0, 8) : "guest";
+
+return base + "?ref=" + referralCode;
 
 }
 
