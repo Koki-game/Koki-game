@@ -731,8 +731,7 @@ if(user){
   db.collection("players").doc(user.uid).set({
     points: Math.floor(state.points),
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-  }, 
-
+  }, { merge: true })
   
   .catch((error) => {
     toast("❌ Firebase error");
