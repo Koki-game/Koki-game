@@ -733,7 +733,7 @@ if(user){
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
   }, 
 
-  })
+  
   .catch((error) => {
     toast("❌ Firebase error");
     console.error("Cloud save error:", error);
