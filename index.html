@@ -699,11 +699,27 @@ state.tasks = {
 const $ = id => document.getElementById(id);
 
 function save(){
-localStorage.setItem(
-"koki_state",
-JSON.stringify(state)
-);
-}
+  localStorage.setItem(
+    "koki_state",
+    JSON.stringify(state)
+  );
+
+  clearTimeout(window.kokiCloudSaveTimer);
+
+  window.kokiCloudSaveTimer = setTimeout(() => {
+    const user = auth.currentUser;
+
+    if(user){
+      db.collection("players").doc(user.uid).set({
+        points: Math.floor(state.points),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true })
+      .catch((error) => {
+        console.error("Cloud save error:", error);
+      });
+    }
+  }, 800);
+}gʻ
 
 function toast(text){
 
