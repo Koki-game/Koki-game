@@ -684,7 +684,7 @@ $("googleLoginBtn").addEventListener("click", async () => {
     const playerRef = db.collection("players").doc(result.user.uid);
     const doc = await playerRef.get();
 
-    if (!doc.exists) {
+    if (!doc.exists || !doc.data().nickname) {
       let nickname = prompt("Choose your KOKI nickname:");
 
       nickname = (nickname || "").trim().slice(0, 20);
@@ -693,11 +693,9 @@ $("googleLoginBtn").addEventListener("click", async () => {
         nickname = "KOKI_" + result.user.uid.slice(0, 6);
       }
 
-      await playerRef.set({
-        points: 0,
-        nickname: nickname,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
+  await playerRef.set({
+  nickname: nickname
+}, { merge: true });
     }
 
     toast("✅ Google account connected");
