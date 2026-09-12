@@ -1,5 +1,5 @@
-const CACHE = "koki-v2";
 
+const CACHE = "koki-v2";
 const files = [
   "./",
   "./index.html",
