@@ -700,7 +700,11 @@ $("googleLoginBtn").addEventListener("click", async () => {
   nickname: nickname
 }, { merge: true });
     }
+const updatedDoc = await playerRef.get();
 
+if (updatedDoc.exists && updatedDoc.data().nickname) {
+  $("googleLoginBtn").textContent = updatedDoc.data().nickname;
+}
     toast("✅ Google account connected");
 
   } catch (error) {
