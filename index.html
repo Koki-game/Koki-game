@@ -681,23 +681,25 @@ $("googleLoginBtn").addEventListener("click", async () => {
 
   try {
     const result = await auth.signInWithPopup(provider);
+    const playerRef = db.collection("players").doc(result.user.uid);
+    const doc = await playerRef.get();
 
-    state = {
-      ...DEFAULT,
-      tasks: { ...DEFAULT.tasks }
-    };
+    if (!doc.exists) {
+      let nickname = prompt("Choose your KOKI nickname:");
 
-    localStorage.setItem(
-      "koki_state",
-      JSON.stringify(state)
-    );
+      nickname = (nickname || "").trim().slice(0, 20);
 
-    await db.collection("players").doc(result.user.uid).set({
-      points: 0,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true });
+      if (!nickname) {
+        nickname = "KOKI_" + result.user.uid.slice(0, 6);
+      }
 
-    draw();
+      await playerRef.set({
+        points: 0,
+        nickname: nickname,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+
     toast("✅ Google account connected");
 
   } catch (error) {
