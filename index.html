@@ -700,6 +700,9 @@ const savedRef = localStorage.getItem("koki_referrer");
   nickname: nickname,
     ...(savedRef ? { referredByCode: savedRef } : {})
 }, { merge: true });
+      if (savedRef) {
+  localStorage.removeItem("koki_referrer");
+}
     }
 const updatedDoc = await playerRef.get();
 
