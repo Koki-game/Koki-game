@@ -709,21 +709,24 @@ function save(){
   window.kokiCloudSaveTimer = setTimeout(() => {
     const user = auth.currentUser;
 
-    if(user){
-      db.collection("players").doc(user.uid).set({
-  points: Math.floor(state.points),
-  updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-}, { merge: true })
-.then(() => {
-  toast("✅ Cloud saved: " + Math.floor(state.points));
-})
-.catch((error) => {
-  toast("❌ Firebase error");
-  console.error("Cloud save error:", error);
-});
-    }
-  }, 800);
+if(user){
+  db.collection("players").doc(user.uid).set({
+    points: Math.floor(state.points),
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  }, { merge: true })
+  .then(() => {
+    toast("✅ Cloud saved: " + Math.floor(state.points));
+  })
+  .catch((error) => {
+    toast("❌ Firebase error");
+    console.error("Cloud save error:", error);
+  });
+} else {
+  toast("⚠️ Firebase user not ready");
 }
+}, 800);
+}
+
 
 function toast(text){
 
