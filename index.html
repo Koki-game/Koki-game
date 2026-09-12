@@ -620,30 +620,28 @@ const firebaseConfig = {
   messagingSenderId: "926136206820",
   appId: "1:926136206820:web:b346733b1268bed7f2b3f1"
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-  const auth = firebase.auth();
-auth.signInAnonymously()
-  .then((result) => {
-    const uid = result.user.uid;
-const playerRef = db.collection("players").doc(uid);
+const auth = firebase.auth();
+  auth.onAuthStateChanged((user) => {
+  if (user) {
+    const playerRef = db.collection("players").doc(user.uid);
 
-return playerRef.get().then((doc) => {
-  if (!doc.exists) {
-    return playerRef.set({
-      points: 0,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    playerRef.get().then((doc) => {
+      if (!doc.exists) {
+        return playerRef.set({
+          points: 0,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }
     });
+  } else {
+    auth.signInAnonymously()
+      .catch((error) => {
+        console.error("Anonymous login error:", error);
+      });
   }
 });
-  })
-  .then(() => {
-    console.log("KOKI player profile ready");
-  })
-  .catch((error) => {
-    console.error("Firebase error:", error);
-  });
 </script>
 <script>
 
@@ -678,7 +676,35 @@ state.tasks = {
 };
 
 const $ = id => document.getElementById(id);
+$("googleLoginBtn").addEventListener("click", async () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
 
+  try {
+    const result = await auth.signInWithPopup(provider);
+
+    state = {
+      ...DEFAULT,
+      tasks: { ...DEFAULT.tasks }
+    };
+
+    localStorage.setItem(
+      "koki_state",
+      JSON.stringify(state)
+    );
+
+    await db.collection("players").doc(result.user.uid).set({
+      points: 0,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    draw();
+    toast("✅ Google account connected");
+
+  } catch (error) {
+    toast("❌ Google login error");
+    console.error("Google login error:", error);
+  }
+});
 function save(){
   localStorage.setItem(
     "koki_state",
